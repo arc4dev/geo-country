@@ -42,15 +42,13 @@ const showCountry = (data, className = '') => {
           Object.keys(country.currencies)[0]
         }</p>
         <div class="country__data country__data--overlay">
-          <p class="country__row"><span>🗣️</span>${
-            Object.values(country.languages)[0]
-          }</p>
-          <p class="country__row"><span>🗣️</span>${
-            Object.values(country.languages)[0]
-          }</p>
-          <p class="country__row"><span>🗣️</span>${
-            Object.values(country.languages)[0]
-          }</p>
+          <p class="country__row"><span>🏙️</span>${country.capital[0]}</p>
+          <p class="country__row"><span>⏲️</span>${country.timezones[0]}</p>
+          <p class="country__row"><span>🗺️</span>
+          <a class="country__link" href="${
+            country.maps.googleMaps
+          }" target="_blank">Open in Maps</a>
+          </p>
         </div>
       </div>
     </article>`;
@@ -76,7 +74,7 @@ const whereAmIasync = async () => {
     const resCountry = await fetch(
       `https://restcountries.com/v3.1/name/${data.country}`
     );
-    if (!res.ok) throw new Error('Could not get the country');
+    if (!resCountry.ok) throw new Error('Could not get the country');
 
     const dataCountry = await resCountry.json();
 
@@ -93,8 +91,11 @@ const whereAmIasync = async () => {
     });
 
     const allNeigbours = await Promise.all(promises);
-    allNeigbours.forEach(n => {
-      showCountry(n, 'neighbour');
+    const flattened = allNeigbours.flat(2);
+    const sortedNeighs = flattened.sort((a, b) => b.population - a.population);
+
+    sortedNeighs.forEach(n => {
+      showCountry([n], 'neighbour');
     });
 
     // 6. Disable button

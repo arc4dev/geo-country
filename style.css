@@ -66,6 +66,7 @@ body {
 }
 
 .country:hover .country__data--overlay {
+  visibility: visible;
   transform: translateY(0);
 }
 
@@ -93,7 +94,6 @@ body {
 
 .neighbour {
   transform: scale(0.8) translateY(1rem);
-  margin-left: 0;
 }
 
 .country__img {
@@ -112,6 +112,7 @@ body {
 }
 
 .country__data--overlay {
+  visibility: hidden;
   position: absolute;
   top: 35%;
   left: 0;
@@ -136,6 +137,21 @@ body {
   margin-bottom: 2.5rem;
   text-transform: uppercase;
   color: #888;
+}
+
+.country__link {
+  color: white;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.country__link:hover {
+  border-bottom: 1px solid white;
+}
+
+.country__link:active {
+  color: orangered;
+  border-bottom: 1px solid orangered;
 }
 
 .country__row:not(:last-child) {
