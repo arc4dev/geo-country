@@ -1,7 +1,8 @@
-"use strict";
+'use strict';
 
-const btn = document.querySelector(".btn-country");
-const countriesContainer = document.querySelector(".countries");
+const btn = document.querySelector('.btn-country');
+const countriesContainer = document.querySelector('.countries');
+const main = document.querySelector('.container');
 
 ////////////////////////////////
 
@@ -11,15 +12,15 @@ const getPosition = () => {
   });
 };
 
-const getJSON = (url) => {
-  return fetch(url).then((res) => {
+const getJSON = url => {
+  return fetch(url).then(res => {
     if (!res.ok) throw new Error(`Country not found (${res.status})`);
 
     return res.json();
   });
 };
 
-const showCountry = (data, className = "") => {
+const showCountry = (data, className = '') => {
   const [country] = data;
 
   const html = `
@@ -54,8 +55,7 @@ const showCountry = (data, className = "") => {
       </div>
     </article>`;
 
-  countriesContainer.insertAdjacentHTML("beforeend", html);
-  countriesContainer.style.opacity = 1;
+  countriesContainer.insertAdjacentHTML('beforeend', html);
 };
 
 const whereAmIasync = async () => {
@@ -66,9 +66,9 @@ const whereAmIasync = async () => {
 
     // 2. Use that to reverse geocoding the coords (it returns location object)
     const res = await fetch(
-      `https://geocode.xyz/${lat},${lng}?geoit=json&auth=315582209870790352150x19438`
+      `https://geocode.xyz/${lat},${lng}?geoit=json&auth=231194208812949415396x121573`
     );
-    if (!res.ok) throw new Error("Could not get your location!");
+    if (!res.ok) throw new Error('Could not get your location!');
 
     const data = await res.json();
 
@@ -76,7 +76,7 @@ const whereAmIasync = async () => {
     const resCountry = await fetch(
       `https://restcountries.com/v3.1/name/${data.country}`
     );
-    if (!res.ok) throw new Error("Could not get the country");
+    if (!res.ok) throw new Error('Could not get the country');
 
     const dataCountry = await resCountry.json();
 
@@ -88,20 +88,25 @@ const whereAmIasync = async () => {
     // display them (UI)
     const promises = [];
 
-    country.borders.forEach((border) => {
+    country.borders.forEach(border => {
       promises.push(getJSON(`https://restcountries.com/v3.1/alpha/${border}`));
     });
 
     const allNeigbours = await Promise.all(promises);
-    allNeigbours.forEach((n) => {
-      showCountry(n, "neighbour");
+    allNeigbours.forEach(n => {
+      showCountry(n, 'neighbour');
     });
 
     // 6. Disable button
-    btn.style.display = "none";
+    btn.style.display = 'none';
   } catch (err) {
     alert(err.message);
   }
+  //Fade out
+  main.style.paddingTop = '5%';
+  setTimeout(() => {
+    countriesContainer.style.opacity = 1;
+  }, 150);
 };
 
-btn.addEventListener("click", whereAmIasync);
+btn.addEventListener('click', whereAmIasync);
