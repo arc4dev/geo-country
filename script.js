@@ -64,12 +64,13 @@ const whereAmIasync = async () => {
 
     // 2. Use that to reverse geocoding the coords (it returns location object)
     const res = await fetch(
-      `https://geocode.xyz/${lat},${lng}?geoit=json&auth=231194208812949415396x121573`
+      `https://geocode.xyz/${lat},${lng}?geoit=json&auth=263611510414744910907x39702`
     );
     if (!res.ok) throw new Error('Could not get your location!');
 
     const data = await res.json();
 
+    console.log(data);
     // 3. Find a country
     const resCountry = await fetch(
       `https://restcountries.com/v3.1/name/${data.country}`
